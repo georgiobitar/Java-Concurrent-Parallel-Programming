@@ -5,12 +5,16 @@ import java.io.*;
 //two files, find similarities
 //img processing
 
+//Changing the code
+
 public class DataAnalysis {
     public static void main(String[] args) throws IOException {
         File file = new File("C:\\Georgio\\University\\Sem8\\Java\\TextReader.txt");
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader((fileInputStream));
         BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
+
+        long start1 = System.nanoTime();
 
         //storing frequencies
         Map<String, Integer> freqMap = new HashMap<>();
@@ -57,5 +61,8 @@ public class DataAnalysis {
         for (Map.Entry<String,Integer> entry : freqMap.entrySet())
             System.out.println("Key = " + entry.getKey() +
                     ", Value = " + entry.getValue());
+
+        long end1 = System.nanoTime();
+        System.out.println("Elapsed Time in nano seconds: "+ (end1-start1));
     }
 }
