@@ -155,7 +155,7 @@ public class DataAnalysis
                     String hostname = "localhost";
                     DatagramPacket sPacket, rPacket;
                     InetAddress ia = InetAddress.getByName(hostname);
-                    DatagramSocket datasocket = new DatagramSocket();
+                    DatagramSocket datasocket = new DatagramSocket(4001);
                     System.out.println("Starting Client Connection");
                     try
                     {
@@ -169,7 +169,7 @@ public class DataAnalysis
 
 
                         byte [] rbuffer = new byte[1024];
-                        rPacket = new DatagramPacket(rbuffer, 1024);
+                        rPacket = new DatagramPacket(rbuffer, 1024,ia,4001);
                         datasocket.receive(rPacket);
 
                         String retString = new String((rPacket.getData()));

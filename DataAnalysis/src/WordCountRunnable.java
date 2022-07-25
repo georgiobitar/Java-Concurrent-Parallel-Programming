@@ -12,14 +12,8 @@ public class WordCountRunnable implements Runnable
     //private JTextArea textArea;
     private int count = 0;
     private final String filePath = FileSystems.getDefault().getPath("data.txt").toString();
-    private static String fileName = FileSystems.getDefault().getPath("testMultithreading.txt").toString();
-
-    /*
-    public WordCountRunnable(String word, JTextArea textArea)
-    {
-        this.word = word;
-        this.textArea = textArea;
-    }*/
+    private static String fileName = FileSystems.getDefault().getPath("data.txt").toString();
+    private volatile String result;
 
     public WordCountRunnable(String word)
     {
@@ -42,13 +36,14 @@ public class WordCountRunnable implements Runnable
                 @Override
                 public void run()
                 {
-                    //textArea.append(word + " appears: " + count + " times\n");
                     try
                     {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
-                        out.write(word + " appears: " + count + " times\n");
-                        out.close();
-                    } catch (IOException e) {
+                        //BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
+                        //out.write(word + " appears: " + count + " times\n");
+                        //out.close();
+                        result = word + " appears: " + count + " times\n";
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //System.out.println(SwingUtilities.isEventDispatchThread());
@@ -59,5 +54,11 @@ public class WordCountRunnable implements Runnable
             e.printStackTrace();
         }
     }
+
+    public String getResult(){
+        if(result==null)
+            return "";
+        return result;
+}
 }
 
