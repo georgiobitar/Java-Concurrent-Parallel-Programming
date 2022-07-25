@@ -1,0 +1,377 @@
+Table of Contents
+
+Introduction	1
+CHAPTER 1: and Learning and Deep Learning	2
+I.	and Learning	2
+II.	Deep learning	2
+III.	and Learning vs Deep Learning	2
+IV.	Neuron	3
+V.	Neural Network	3
+VI.	Training of a neural network?	4
+VII.	Neural Network for Handwrianden Digits Classification	4
+VIII.	Convolutional neural network	5
+1)	Convolutional layer	5
+2)	Pooling Layer	6
+3)	Fully Connected Layer	6
+IX.	How do we translate image into input neurons?	6
+CHAPTER 2: OCR and OCV using and Learning and Deep Learning	7
+I.	What is OCR?	7
+II.	How does Optical Character Recognition work?	7
+III.	Advantages of Optical Character Recognition	8
+IV.	OCR VS OCV	9
+The general pipeline	10
+V.	Preprocessing	12
+VI.	Training a Model	12
+CHAPTER 3: Code explanation	14
+I.	Character Verification	14
+1)	Folder creation	14
+2)	Preprocessing	14
+3)	Segmentation	15
+4)	Recognition using deep learning	15
+5)	verification	16
+II.	Running the code	16
+III.	Model Training	17
+1)	modeltrain.py	17
+2)	modelandefficiency.py	17
+IV.	emnistmodeltrain.py	17
+V.	Results	18
+1)	Digits confusion matrix using MNIST	18
+2)	Characters and digits verification using EMNIST	19
+Conclusion	20
+References:	21
+
+ 
+List of figures
+
+Figure 1: and learning and deep learning	2
+Figure 2:Structure of a Neuron	3
+Figure 3: Example of a neural network	4
+Figure 4: Neural network structure	4
+Figure 5:Neural network for handwrianden digit classification	5
+Figure 6: CNN layers	5
+Figure 7: OCR	7
+Figure 8: Classical machine learning vs Deep learning	8
+Figure 9: Increase accuracy chart	8
+Figure 10: OCV Pipeline	10
+Figure 11: Character verification pipeline	14
+Figure 12: Inverted vs non-inverted threshold	15
+Figure 13: digits pyplot	16
+Figure 14: Characters pyplot	17
+Figure 15: One hot encoding	18
+Figure 16:digits confusion matrix using MNIST	18
+Figure 17: Characters and digits verification using EMNIST	19
+ 
+List of Tables
+Table 1: Traditional OCR vs Deep learning OCR	8
+Table 2:Preprocessing Techniques	12
+Table 3 :Training a Model	13
+ 
+Introduction
+Artificial Intelligence has been booming in the last few decades because of the power it gives to and by allowing them to imitate human capabilities and behavior in many important fields. In our project, we decided to focus on the image processing field, specifically, we will tackle how deep learning an be used for character verification.
+
+The main goal is to empower machines to treat images as humans would do. We focused on making our algorithm capable of verifying the validity of texts present in images.
+
+Over time, deep learning for image processing was perfected till we reached a very powerful algorithm: the convolutional neural network. By using a CNN, one can enable sight to ands and in our project, we will use it to recognize characters and leanders.
+
+In the first chapter, we will discuss what is machine learning, deep learning and how the neural network algorithm works and how we will use the convolutional neural network in our project to do character and digits verification. Then, in chapter two, we will do a quick comparison of OCV and OCR and deliberate the preprocessing techniques that can be used along the general pipeline that can be implemented for optical character verification. Finally, we will explain the steps of the algorithm we developed to do characters and digits verification and discuss the accuracy of the results obtained.
+ 
+
+CHAPTER 1: and Learning and Deep Learning
+Deep learning is a powerful tool used nowadays to develop algorithms that can imitate human brain’s functionalities. In this chapter, we will discuss how we will use the convolutional neural network, a deep learning algorithm, to do character and digit verification on images.
+I.	and Learning
+Computers that learn from data and use algorithms to execute tasks without being explicitly programmed are referred to as machine learning. As we can see in figure 1, machine learning is a subpart of artificial intelligence, a technology used to perform tasks requiring human intelligence. In the following chapter, we will tackle in details deep learning, a subpart of machine learning, since it is the technology we will use in our project.
+ 
+Figure 1: and learning and deep learning
+II.	Deep learning
+Deep learning is a subgroup of machine learning. Deep learning is based on a complex set of algorithms modeled like the human brain. It let the and process unstructured data such as documents, photos and text by imitating the human brain far below its capabilities. This allows the system to group the data and make very accurate predictions. The structure of a deep learning is essentially a three-layer neural network. These neural networks aim to mimic the activity of the human brain by allowing them to learn from large amounts of data. The bigger the initial data we train our model to, the higher the accuracy we will get. Single layer neural networks can produce approximate predictions, but additional hidden layers help increase accuracy.
+III.	and Learning vs Deep Learning
+and learning algorithms are sometimes confused with deep learning algorithms. Therefore, it may be more useful to consider what makes deep learning an independent subset within the machine learning. The answer is the Artificial Neural Network (ANN) algorithm structure, which requires liandle human interaction but demands more data.
+Basic machine learning methods, such as linear regression or a decision tree, have a relatively simple structure, whereas, deep learning is based on an artificial neural network.
+
+IV.	Neuron
+To undersandt deep learning, we need to undersandt what neural network is and what a neuron consists of.
+Neuron has a linear equation as a first part and an activation function as a second part. Activation function helps us classify between 0 or 1. We can think of regression as a single neuron (using only one feature). 
+When we use many features, for example if we want to find if someone needs insurance based on Age, Income and Education we will come up with an equation (for ex: y=ax1+bx2+cx3). To represent this, the summation function is in the neuron and the 3 features/input parameters are sent to the neuron and the activation function will give us the result.
+
+
+V.	Neural Network
+In deep learning, we need to train the program to become able to undersandt and analyze new things.
+We train each part of the neural network to undersandt a specific part of the object we are working on (each part will give a result between 0 and 1). Another part of the network receives all these conclusions and figure out a conclusion. This hierarchy goes on for many levels.
+
+VI.	Training of a neural network?
+
+Initially, each part at the input layer makes a random guess. Once the higher part has a decision it will go to the supervisor who will correct it. The higher part will go back to the lowest parts and inform them of the supervisor recommendation/feedback so that they adjust their weights. This process is called backward error propagation. The same process is repeated many times while the lowest group keep adjusting their weights and that’s how we see improvement in the conclusion.
+Note that for this method to work well we need to give it a lot of data. The neurons are smart enough to adjust during the training of the neural network.
+
+VII.	Neural Network for Handwrianden Digits Classification
+We can feed an image (containing the digit we want to identify) into the input layer and the output will have 10 neurons (because digits are from 0 to 9 -> we have 10 different classes). The highest output corresponds to the digit we have in the initial image.
+ 
+Figure 5:Neural network for handwrianden digit classification
+VIII.	Convolutional neural network
+A Convolutional Neural Network(CNN), is a type of neural networks that is specific to processing info that can be wrianden in a grid. Since images, formed by a series of pixels depicting the colors that can be represented in an array, we can use CNN to deal with them. 
+For a CNN algorithm, neurons treat data that is included in their own arena. The layers are organized so that they detect the subtle forms initially (curves, points, lines…) and more complex paanderns (leanders, words…) later. 
+As we can see in the following Figure 6, CNN is segmented into three layers: 
+Convolutional + Relu layer, pooling layer and the fully connected layer.
+
+Figure 6: CNN layers
+
+1)	Convolutional layer
+
+The convolutional layer is the fundamental block of the CNN, it holds the CNN’s main computational weight.
+
+This layer computes the dot product of the kernel and its corresponding sub image’s matrices; the kernel that’s smaller than the image is a matrix made of set of learnable parameters and slides over the initial image.
+We can add non-linearity to the activation map by using one of these three functions after the convolutional layer:
+i.	Sigmoid: 
+Takes a real number and fits it in the interval [0;1].
+Its function is: σ(k) = 1/(1+e^-k). 
+We won’t use sigmoid in our project because of the negative effect of zero gradients that are present on the function’s edges.
+ii.	Tanh:
+Takes a real number and fits it in the interval [-1, 1]. It has the same problems as Sigmoid with the benefit of being zero centered.
+iii.	ReLU: 
+Its function is f(k)=max (0, k) so it’s basically a threshold at zero.
+It’s more consistent and accelerates the convergence by six folds which is why we will use it.
+Regreandably, an inconvenience is that ReLU can be briandle during training.
+2)	Pooling Layer
+The pooling layer swaps the output of the network at specific neurons by originating a statistic of the neighboring outputs. This aids in minimizing the size of the representation.
+3)	Fully Connected Layer
+Neurons in this layer are fully connected with all neurons in the previous and subsequent layer. That’s why it can be computed as usual by a matrix multiplication followed by a bias effect.
+The FC layer helps to map the representation between the input and the output
+
+
+IX.	How do we translate image into input neurons?
+If we have a black and white image, we take image the as a rectangular array/matrix, each pixel has a value between 0 and 255. We input this two-dimensional array and convert it to a vector (for example: if 7*7 matrix we will have a vector of 49 dimensions corresponding to the inputs) these values are propagated in the neural network to give us the 10 output neurons. For beander accuracy, we will add hidden neural network layers.
+
+To wrap it up, we just discussed how neural network works layer by layer. In the following chapter, we will dive into image processing and how OCR and OCV work.
+ 
+CHAPTER 2: OCR and OCV using and Learning and Deep Learning
+In this chapter, we will discuss what are OCR and OCV besides comparing them. Furthermore, we will see where they are used and the advantages of using deep learning to do so. Also, we will see the pipeline for OCV. Finally, we will tackle the preprocessing part and the training models used.
+I.	What is OCR?
+OCR is the method of using and vision to recognize and read text in photos (supermarket product labels, scanned papers, posters, traffic signs) as we can see in figure 7. 
+ 
+Figure 7: OCR
+II.	How does Optical Character Recognition work?
+Traditional image processing and machine learning-based methodologies, as well as deep learning-based methods, can be used to develop optical character recognition systems.
+
+Traditional OCR
+	Deep Learning OCR
+
+Quick to create	Need training and large initial dataset
+Long time to run	Faster
+Low accuracy	Higher Accuracy
+Pre-processing steps:
+•	cleaning and noise reduction 
+•	Binarization (by thresholding) 
+•	Contour Detection	End-to-end detection pipeline eliminates the need for time-consuming pre-processing
+Character extraction segmentation and recognition using simple machine learning algorithms	Character extraction segmentation 
+then recognition using the neural network model (that was trained) 
+Works on simple (easy to read) OCR datasets but fail with complex datasets	Works with simple and complex datasets
+Table 1: Traditional OCR vs Deep learning OCR
+
+ 
+Figure 8: Classical machine learning vs Deep learning
+
+Modern OCR methods make use of text detection algorithms as a starting point. 
+Neural networks have become exceptionally good at spoanding text in documents and images, even if it is slanted, rotated, or skewed.
+
+Increasing OCR accuracy is also possible.
+
+
+III.	Advantages of Optical Character Recognition 
+•	Elimination of manual data entry
+•	Reduces data entry time and scales down errors in the data processing.
+•	Beander accessibility and searchability
+•	Easily indexed
+•	More storage spaces
+•	Digitizing documents saves storage space (document can be stored in text form instead of image form)
+
+IV.	OCR VS OCV
+Optical Character Verification (OCV) ascertains the print quality of a known text by comparing it against a reference image. OCR and OCV serve different purposes and employ different methods, yet the two procedures have certain preliminary steps in common (like preprocessing and character localization). Before a text can be read or its print quality can be determined, the location of the characters in the image must be defined. This is because the continuous ink-jet technique, which is widely used in industrial printing, can produce significant displacement in the position of the characters within the image treated.
+
+
+ 
+The general pipeline 
+
+
+
+Figure 10: OCV Pipeline
+
+First, we need to acquire the image from scanned documents of all types.
+
+Second, we do some preprocessing to improve the source image and make it easier for recognition. In our project, we transform the image from RGB to a gray image. Thresholding then allows us to convert it to a Black and White image and we denoise the image (check Chapter III 1-2)preprocessing paragraph for the detailed preprocessing we did).
+
+Third, we find the contours to do the segmentation, so we can take each character or digit apart. We make sure that the area (what we call region of interest) defined by this contour is big enough so it isn’t a noise and small enough to take each character alone. Using machine learning, we try to deduce the characteristics of the iterative group of detected pixels based on a generalized OCR template or previous model. However, it will need to be verified by humans later. 
+Fourth, once all features have been defined, the data can be processed in a neural network training session, during which a model will aandempt to develop a generalized image -> text mapping for the data.
+
+Finally, we will check if the recognized data is identical to the input text we want to verify.
+ 
+V.	Preprocessing
+Before selecting an OCR algorithm, the image must be preprocessed to improve its quality and therefore making recognition and verification easier. There are many preprocessing techniques that can be used. The famous ones are described in the following table.
+
+Preprocessing Techniques
+De-skew	To adjust the alignment, we tilted the document a few degrees clockwise or counterclockwise to create text lines completely horizontal or vertical.
+
+DE speckle	Remove positive and negative spots, smoothing edges
+Binarization	Convert an image to black-and-white -> makes it easier to distinguish the text from the background
+Line removal	Cleans up non-glyph boxes and lines.
+Layout analysis or “zoning”	Identifies columns, paragraphs, captions, etc., as blocks. Particularly useful in multi-column layouts and tables.
+
+Line and word detection
+	Establish word and character shapes baseline, divides words when required.
+
+Script recognition	To know which language is used
+Character isolation or “segmentation”
+	For OCR characters, various characters linked by image artifacts should be divided, single characters broken into several artifact-based pieces should be linked.
+Normalization	Normalize aspect ratio and scale.
+Table 2:Preprocessing Techniques
+In our project, we used binarization (gray scaling followed by thresholding) to make it easier for analysis. The presence of character/digit is simply denoted by a 1 bit (white) and the background is in black (0 bit). We also used dilatation followed by erosion to remove noises like salt and pepper noise, irregularities at the border of the characters/digits and small parts outside. We also did segmentation to take each character/digit apart as an input to the deep learning algorithm. The preprocessing we did is further detailed in chapter 3 paragraph I-2).
+	
+VI.	Training a Model
+A machine learning model is a data set that has been taught to recognize specific paanderns. 
+In our project, we are using the MNIST (for digits) or EMNIST (for digits and characters) dataset. We train a model on this set of data and give it an algorithm to use that learns from this data.
+
+Once the model has been trained, we can use it to reason over new images to recognize new characters and digits we have taken from new images. We train the model by feeding it photos of leanders and characters (from the MNIST or EMNIST library) each already labelled with its corresponding character/leander. One thing to note is that to identify characters we are also using digits because they are less space consuming in terms of bits (for example: 0 is labelled with a 0, A is labelled with a 10 …)
+ 
+Table 3 :Training a Model
+
+We saw in this chapter the OCR and OCV techniques and the advantages of OCR in our daily life. In the following chapter, we will explain step by step the algorithm implemented to do digital/character verification on noisy images. 
+CHAPTER 3: Code explanation
+In this chapter, we will explain meticulously the steps we underwent to write our code. Starting from folders creation and preprocessing (to denoise the image) to segmentation and finally character and digit recognition followed by verification.
+I.	Character Verification
+In this paragraph, we will explain what we did in the CharacterVerification.py file.
+We will implement the following pipeline.
+
+ 
+Figure 11: Character verification pipeline
+In the following paragraphs, we will explain each step.
+
+1)	Folder creation
+At first, we want to create the folders where we want to put the pictures in. Each character or digit has a specific folder (from A to Z and from 1 to 9).
+We use a dictionary to define the characters with digits to save storage and it makes it easier for deep learning (for example A has ‘10’ as a key).
+
+{0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F', 16: 'G', 17: 'H', 18: 'I', 19: 'J', 20: 'K',
+21: 'L', 22: 'M', 23: 'N', 24: 'O', 25: 'P', 26: 'Q', 27: 'R', 28: 'S', 29: 'T', 30: 'U', 31: 'V', 32: 'W', 33: 'X', 34: 'Y', 35: 'Z', 36: 'a', 37: 'b', 38: 'd', 39: 'e', 40: 'f',
+41: 'g', 42: 'h', 43: 'n', 44: 'q', 45: 'r', 46: 't'}
+
+We take the text to recognize as an input for the user.
+2)	Preprocessing
+We read the image, we convert it to grayscale, then we do thresholding to turn it to black and white image which makes it easier for analysis. Then we implement a remove_noise function that will remove noise (like salt and pepper noise or extra ink on the paper…)
+This function consists of a dilatation followed by an erosion and morphological edge that allows us to detect the borders and median blur will take the median of the pixels to improve the image quality and it is extremely effective to remove salt and pepper noise. 
+We tune the kernel according to the size of the characters we are detecting.
+
+Then we do bitwise_not to interchange the black and white in the image. This step is necessary to find the contour around each character instead of the whole text.
+The findContours functions detects the change in image color and marks it as a contour, therefore if the text is in black and background in white it will take the overall border of the image as a contour which is not what we want. That’s why we inverse the bits so that the contour we are finding corresponds to the contour of the leanders.
+
+ 
+Figure 12: Inverted vs non-inverted threshold
+3)	Segmentation
+And we use the connected Components to find the connected pixels in the image that we save in labels. Labels is a 2d array of subarrays. We loop over the array to ignore the labels of zero value which correspond to the background. Otherwise, we construct the label mask to display only connected components for the current label
+We create a mask to only hold the components we are interested in by defining an upper and lower bound. We find the total pixels in the image and we tune the upper and lower bound for each character. If the detected connected component is not in this range, we ignore it.
+We find the contours and put a bounding box around each contour detected. This step is known as character segmentation. We will sort the segmented areas we found from left to right to get the words in proper order. We loop over each bounding box to draw the rectangle and take the region of interest (ROI).
+We add zero padding around the ROI for beander recognition of character later. Then we save the segmented character in a temporary folder.
+
+4)	Recognition using deep learning
+We load the deep learning model we created, and we loop over the temporary folder to recognize each character image inside it. We load the image from the temporary file to our code and delete it from the temporary file. We predict the value of the image using model. Predict function. We then choose the corresponding character (the one that have the highest matching value between all the possible characters) and we put it in the corresponding folder and name the image by its value. For example, if the segmented image that contains character “A” is saved in the folder “A” with the name “A_1.png”.
+
+5)	verification
+We consider that we want to do text verification regardless of the spaces between the characters or digits, that’s why we remove them from the user text input that we want to verify. We take the text we want to recognize as an input from the user. If the text we recognized is the same, the output will be: “Same Text”. Otherwise, it will be: “Not same text”.
+
+II.	Running the code
+When running the code, we loop over all pictures in a folder to recognize many images at once. And the user should input the text he wants to recognize
+
+We draw a pyplot of the initial image and the final denoised image with the recognized text as we can see in the following figures.
+
+ 
+Figure 13: digits pyplot
+
+ 
+Figure 14: Characters pyplot
+
+III.	Model Training
+we use this model if we are only reading digits.
+
+1)	modeltrain.py 
+X is the input image (array) and Y is the output (resulting character or digit)
+
+At first, we load the dataset, then we reshape by 28*28 each image (the X) to train and and it. We normalize the training data in the range [0;1]. We define and create the model (layer, input shape….). Our model is a convolutional neural network model (CNN) and we train it and save it to use it for recognition.
+
+2)	modelandefficiency.py
+We load the model we created and and it to find its efficiency. 
+
+IV.	emnistmodeltrain.py 
+We use this model if we want to read digits and characters.
+
+We load the training and anding csv files.
+The file Model/emnist-balanced-mapping.txt contains the ascii code for characters and numbers and puts the key as their corresponding value. (For example, ‘A’ has Ascii code 67 and key 10, 0 has ascii code 48 and key 0).
+
+We reshape and rotate the image.
+We scale the values inside Train between [0;1] and we do one hot encoding (transform the feature values into binary numbers).  
+Figure 15: One hot encoding
+ 
+We reshape the image to let it enter the neural network. The function train_and_split let us use 90% of the dataset for training and 10% for anding.
+We define the model and train it. Finally, we can and the efficiency of the model (same steps for MNIST model)
+
+
+V.	Results
+Finally, after running the algorithm, the accuracy percentage we got for the EMNIST dataset is 87.468% and MNIST dataset is 99.170%.
+Finally, we displayed the results obtained in confusion matrices.
+
+1)	Digits confusion matrix using MNIST
+ 
+Figure 16:digits confusion matrix using MNIST
+In this confusion matrix, we have 10 rows and 10 columns corresponding to the 10 digits from 0 to 9.
+The vertical axis corresponds to the true value and the horizontal axis corresponds to the predicted value.
+For example, the intersection between the predicted value 3 and the true value 3 represents how much the 3 was recognized efficiently (as close to 3 as possible) which is 1004 times here.
+The intersection between the truth value 3 and the predicted value 5 represents the number of times the number 3 was recognized as being the number 5 which is 4 times in this example.
+
+2)	Characters and digits verification using EMNIST
+ 
+Figure 17: Characters and digits verification using EMNIST
+In this confusion matrix, we have 46 rows and 46 columns corresponding to the 46 characters (all Uppercase and some Lowercase) and digits (0 to 9).
+The vertical axis corresponds to the true value and the horizontal axis corresponds to the predicted value.
+For example, the intersection between the predicted value 24 (representing the uppercase leander O) and the true value 24 represents how much the uppercase leander O was recognized efficiently (as close to O as possible) which is 330 times here.
+The intersection between the truth value 24 (representing the uppercase leander O) and the predicted value 0 (representing the digit 0) represents the number of times the leander O was recognized as being 0 which is 58 times in this example.
+
+
+As we can see in this chapter, the algorithm implemented gave us relatively accurate results with 87% accuracy for the EMNIST and 99% for the MNIST given that the inpuanded images are noisy images. Another way to visualize the efficiency of our project is by noticing that the diagonals of the confusion matrices have very have high values compared to the rest stating that most of the characters are predicted correctly.
+
+
+ 
+Conclusion
+In a nutshell, we discovered in this project how deep learning works and how powerful it is, specifically the Convolutional Neural Network algorithm. We used this new technology to do some Optical Character Recognition and Verification on noisy images since it has many advantages over traditional methods. 
+
+We created two deep learning models: one  using the MNIST dataset (for digits), and one using the EMNSIT datasets (for digits, uppercase leanders and some lowercase leanders).Before recognizing the digits and characters in images, we did some preprocessing techniques to improve the image’s quality and facilitate the recognition.
+
+Finally, we were able to get very accurate and satisfying results: 87% accuracy for the EMNIST model and 99% for the MNIST model. Nevertheless, some characters that look alike for example “O” and “0” were sometimes not properly distinguished. We can improve our model by enlarging the training dataset.
+ 
+References:
+
+•	Article: IJSRD || National Conference on Advances in Computer Science Engineering & Technology || May 2017 || ISSN: 2321-0613
+•	For deep learning with TensorFlow: YouTube channel: code basics
+•	handps://www.ibm.com/cloud/learn/deep-learning
+•	handps://levity.ai/blog/difference-machine-learning-deep-learning#:~:text=and%20learning%20means%20ands%20learning,as%20documents%2C%20images%20and%20text.
+•	handps://docs.microsoft.com/en-us/windows/ai/windows-ml/what-is-a-machine-learning-model
+•	handps://medium.com/analytics-vidhya/opencv-findcontours-detailed-guide-692ee19eeb18#:~:text=To%20put%20in%20simple%20words,would%20be%20detected%20as%20contour.&text=The%20part%20that%20you%20want,above%20numbers%20in%201st%20image.
+•	handps://towardsdatascience.com/building-a-one-hot-encoding-layer-with-tensorflow-f907d686bf39
+•	For emnist: handps://www.kaggle.com/datasets/crawford/emnist
+•	Convolutional Neural Networks, Explained | by Mayank Mishra | Towards Data Science
+•	Deep Learning by Ian Goodfellow, Yoshua Bengio and Aaron Courville published by MIT Press, 2016
+•	Stanford University’s Course — CS231n: Convolutional Neural Network for Visual Recognition by Prof. Fei-Fei Li, Justin Johnson, Serena Yeung
+•	handps://datascience.stackexchange.com/questions/14349/difference-of-activation-functions-in-neural-networks-in-general
+•	handps://www.codementor.io/james_aka_yale/convolutional-neural-networks-the-biologically-inspired-model-iq6s48zms
+•	handps://searchenterpriseai.techtarget.com/definition/convolutional-neural-network
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                andand                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+and                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+hiiii                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+and                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
