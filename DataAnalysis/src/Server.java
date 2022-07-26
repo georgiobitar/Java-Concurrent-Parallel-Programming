@@ -7,6 +7,7 @@ import java.net.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.Semaphore;
 
 public class Server {
     private static final String filePath = FileSystems.getDefault().getPath("data.txt").toString();
@@ -18,6 +19,10 @@ public class Server {
     private static Socket socket = null;
     private static ServerSocket server = null;
     private static DataInputStream in = null;
+
+    private int numReaders = 0;
+    private Semaphore mutex = new Semaphore(1);
+    private Semaphore lock = new Semaphore(1);
 
     public Server(String fileName) {
 
@@ -33,6 +38,7 @@ public class Server {
             System.out.println("Starting Server");
             while (true) {
                 try {
+
                     byte[] buf = new byte[len];
                     dataPacket = new DatagramPacket(buf, buf.length);
                     //wait for user to send packet and put it in the datapacket variable
@@ -54,37 +60,49 @@ public class Server {
                             Response = CountThreeWords(FirstWord, SecondWord, ThirdWord);
                             break;
 
-                        case "Multi-ThreadedWordsCount":
-                            //CountMultithreadedWord(String filePath, String outputFile, int nbThreads)
+                        case "MultiThreadedWordsCount":
+                            String outputFilePath = FileSystems.getDefault().getPath("data-output.txt").toString();
+                            int nbThreads =Integer.parseInt(String.valueOf((Long) jsonObj.get("nbThreads")));
+                            CountMultithreadedWord(filePath, outputFilePath,  nbThreads);
+                            Response = "Please find the output in data-output.txt";
                             break;
 
                         case "AddWord":
                             String WordToAdd = (String) jsonObj.get("WordToAdd");
                             AddWord(WordToAdd);
+                            Response = "Word '"+WordToAdd+"' added";
                             break;
 
                         case "ReplaceWord":
-                            //ChangeWord(String word1, String word2, String filePath);
+                            String oldWord = (String) jsonObj.get("OldWord");
+                            String newWord = (String) jsonObj.get("NewWord");
+                            ChangeWord(oldWord, newWord, filePath);
+
+                            Response = "All words are now replaced!";
                             break;
-                            //default:
-                            //System.out.println("Error getting data");
+
+                        default:
+                            System.out.println("Error getting data");
 
                     }
 
-                    byte[] buffer;
+                    byte[] buffer = new byte[1024];
                     buffer = Response.getBytes();
-                    returnPacket = new DatagramPacket(buffer, buffer.length, dataPacket.getAddress(), 4001);
+                    returnPacket = new DatagramPacket(buffer, buffer.length,dataPacket.getAddress(), dataPacket.getPort());
 
                     datasocket.send(returnPacket);
-
+                    datasocket.close();
+                    datasocket = new DatagramSocket(portNumber);
 
                 } catch (SocketTimeoutException e) {
                     break;
                 } catch (IOException e) {
                     System.err.println(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
-            datasocket.close();
+
         } catch (SocketException se) {
             System.err.println(se);
         } finally {
@@ -104,37 +122,42 @@ public class Server {
 
     }
 
-    public String CountThreeWords(String firstTextField, String secondTextField, String thirdTextField) {
+    public String CountThreeWords(String firstTextField, String secondTextField, String thirdTextField) throws InterruptedException {
         try {
-            //readerWriter.startRead();
+            mutex.acquire();
+            numReaders++;
+            if (numReaders == 1)
+                lock.acquire();
+            mutex.release();
+
             long start1 = System.nanoTime();
             String TotalResult = "";
             Thread thread1 = null, thread2 = null, thread3 = null;
-            WordCountRunnable wc1 = new WordCountRunnable(secondTextField);
+            WordCountRunnable wc1 = new WordCountRunnable(firstTextField);
             WordCountRunnable wc2 = new WordCountRunnable(secondTextField);
-            WordCountRunnable wc3 = new WordCountRunnable(secondTextField);
+            WordCountRunnable wc3 = new WordCountRunnable(thirdTextField);
 
-            if (!firstTextField.equals("")) {
+            if (!firstTextField.isBlank()) {
                 thread1 = new Thread(wc1);
-                thread1.start();
             }
-            if (!secondTextField.equals("")) {
+            if (!secondTextField.isBlank()) {
                 thread2 = new Thread(wc2);
-                thread2.start();
             }
-            if (!thirdTextField.equals("")) {
+            if (!thirdTextField.isBlank()) {
                 thread3 = new Thread(wc3);
-                thread3.start();
             }
             if (thread1 != null) {
+                thread1.start();
                 thread1.join();
                 TotalResult += wc1.getResult();
             }
             if (thread2 != null) {
+                thread2.start();
                 thread2.join();
                 TotalResult += wc2.getResult();
             }
             if (thread3 != null) {
+                thread3.start();
                 thread3.join();
                 TotalResult += wc3.getResult();
             }
@@ -146,25 +169,39 @@ public class Server {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         } finally {
-            readerWriter.endRead();
+            mutex.acquire();
+            numReaders--;
+            if (numReaders == 0)
+                lock.release();
+            mutex.release();
         }
     }
 
-    public void CountMultithreadedWord(String filePath, String outputFile, int nbThreads) {
+    public void CountMultithreadedWord(String filePath, String outputFile, int nbThreads) throws InterruptedException {
         try {
-            readerWriter.startRead();
+            mutex.acquire();
+            numReaders++;
+            if (numReaders == 1)
+                lock.acquire();
+            mutex.release();
+
             MultithreadedWordCount multithreadedWordCount = new MultithreadedWordCount(filePath, outputFile, nbThreads);
             multithreadedWordCount.CountWords();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            readerWriter.endRead();
+            mutex.acquire();
+            numReaders--;
+            if (numReaders == 0)
+                lock.release();
+            mutex.release();
         }
     }
 
     public void ChangeWord(String word1, String word2, String filePath) {
         try {
-            readerWriter.startWrite();
+            //readerWriter.startWrite();
+            lock.acquire();
             Path fileName = Path.of(filePath);
             String str = Files.readString(fileName);
             System.out.println("Old file:\n" + str + "\n\n\n");
@@ -176,7 +213,7 @@ public class Server {
         } catch (Exception e) {
             System.err.println(e);
         } finally {
-            readerWriter.endWrite();
+            lock.release();
         }
     }
 }

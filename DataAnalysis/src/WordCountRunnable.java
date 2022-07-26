@@ -6,8 +6,7 @@ import java.util.Scanner;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-public class WordCountRunnable implements Runnable
-{
+public class WordCountRunnable implements Runnable {
     private String word;
     //private JTextArea textArea;
     private int count = 0;
@@ -15,8 +14,7 @@ public class WordCountRunnable implements Runnable
     private static String fileName = FileSystems.getDefault().getPath("data.txt").toString();
     private volatile String result;
 
-    public WordCountRunnable(String word)
-    {
+    public WordCountRunnable(String word) {
         this.word = word;
     }
 
@@ -25,40 +23,29 @@ public class WordCountRunnable implements Runnable
         File f = new File(filePath);
         try {
             Scanner scanner = new Scanner(f);
-            while (scanner.hasNext())
-            {
+            while (scanner.hasNext()) {
                 String str = scanner.next();
                 if (str.equals(word))
                     count++;
             }
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    try
-                    {
-                        //BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
-                        //out.write(word + " appears: " + count + " times\n");
-                        //out.close();
-                        result = word + " appears: " + count + " times\n";
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    //System.out.println(SwingUtilities.isEventDispatchThread());
-                }
-            });
+
+            //BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
+            //out.write(word + " appears: " + count + " times\n");
+            //out.close();
+            result = word + " appears: " + count + " times\n";
+
+
             scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public String getResult(){
-        if(result==null)
+    public String getResult() {
+        if (result == null)
             return "";
         return result;
-}
+    }
 }
 

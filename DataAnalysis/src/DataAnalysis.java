@@ -49,7 +49,7 @@ public class DataAnalysis
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         makeLabelsPanel();
         frame.add(makeTextAreaPanel(), BorderLayout.CENTER);
-        frame.setSize(700, 500);
+        frame.setSize(700, 800);
         frame.setVisible(true);
         //System.out.println(SwingUtilities.isEventDispatchThread());
     }
@@ -98,7 +98,7 @@ public class DataAnalysis
         panel.add(new JLabel("Text Data:"));
         panel.add(stringToSendTextField);
         AddWordButton = new JButton("Add word to file");
-        AddWordButton.addActionListener(new clientServerListener());
+        AddWordButton.addActionListener(new AddWordListener());
         panel.add(AddWordButton);
         panel.add(new JLabel(" "));
         panel.add(new JLabel(" "));
@@ -116,8 +116,6 @@ public class DataAnalysis
         panel.add(new JLabel(" "));panel.add(new JLabel(" "));
 
         frame.add(panel, BorderLayout.NORTH);
-
-
 
     }
 
@@ -151,39 +149,8 @@ public class DataAnalysis
                     request.put("SecondWord",secondTextField.getText());
                     request.put("ThirdWord",thirdTextField.getText());
 
-                    //send data to server and call the threethreadswordcount
-                    String hostname = "localhost";
-                    DatagramPacket sPacket, rPacket;
-                    InetAddress ia = InetAddress.getByName(hostname);
-                    DatagramSocket datasocket = new DatagramSocket(4001);
-                    System.out.println("Starting Client Connection");
-                    try
-                    {
-                        //String dataToAdd = stringToSendTextField.getText().trim();
-                        byte[] buffer;
-                        buffer = request.toString().getBytes();
-                        sPacket = new DatagramPacket(buffer, buffer.length, ia, portNumber);
-                        //sending the packet
-                        datasocket.send(sPacket);
-
-
-
-                        byte [] rbuffer = new byte[1024];
-                        rPacket = new DatagramPacket(rbuffer, 1024,ia,4001);
-                        datasocket.receive(rPacket);
-
-                        String retString = new String((rPacket.getData()));
-
-                    }
-                    catch (IOException eee)
-                    {
-                        System.err.println(eee);
-                    }
-
-                    datasocket.close();
-                    System.out.println("Stopping Client Connection");
+                    SendPacket(request);
                 }
-
             }
             catch(Exception ex)
             {
@@ -217,19 +184,26 @@ public class DataAnalysis
                 }
 
                 else{
-                    TimeUnit.SECONDS.sleep(10);
                     int nbThreads = Integer.parseInt(numberOfThread.getText().trim());
-                    //send data to server
+
+                    String RequestType = "MultiThreadedWordsCount";
+                    JSONObject request = new JSONObject();
+                    request.put("Type",RequestType);
+                    request.put("nbThreads",nbThreads);
+
+                    SendPacket(request);
                 }
             }
-            catch (InterruptedException e)
+            catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
     }
 
-    public class clientServerListener implements ActionListener
+
+
+    public class AddWordListener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent arg0)
@@ -244,32 +218,17 @@ public class DataAnalysis
                 }
 
                 else{
-                    String hostname = "localhost";
-                    DatagramPacket sPacket;
-                    InetAddress ia = InetAddress.getByName(hostname);
-                    DatagramSocket datasocket = new DatagramSocket();
-                    System.out.println("Starting Client");
-                    try
-                    {
-                        String dataToAdd = stringToSendTextField.getText().trim();
-                        byte[] buffer;
-                        buffer = dataToAdd.getBytes();
-                        sPacket = new DatagramPacket(buffer, buffer.length, ia, portNumber);
-                        //sending the packet
-                        datasocket.send(sPacket);
-                    }
-                    catch (IOException e)
-                    {
-                        System.err.println(e);
-                    }
+                    String RequestType = "AddWord";
+                    JSONObject request = new JSONObject();
+                    request.put("Type",RequestType);
+                    request.put("WordToAdd",stringToSendTextField.getText());
 
-                    datasocket.close();
-                    //System.out.println("Stopping Client");
+                    SendPacket(request);
+
                 }
 
-
             }
-            catch (UnknownHostException | SocketException e)
+            catch (Exception e)
             {
                 System.err.println(e.getMessage());
             }
@@ -292,6 +251,14 @@ public class DataAnalysis
                     String oldWord = replacedWord.getText().trim();
                     String newWord = alternativeWord.getText().trim();
 
+                    String RequestType = "ReplaceWord";
+                    JSONObject request = new JSONObject();
+                    request.put("Type",RequestType);
+                    request.put("OldWord",oldWord);
+                    request.put("NewWord",newWord);
+
+                    SendPacket(request);
+
                 }
 
 
@@ -300,6 +267,36 @@ public class DataAnalysis
             {
                 System.err.println(e);
             }
+        }
+    }
+
+    public void SendPacket(JSONObject request) throws UnknownHostException, SocketException {
+        String hostname = "localhost";
+        DatagramPacket sPacket, rPacket;
+        InetAddress ia = InetAddress.getByName(hostname);
+        DatagramSocket datasocket = new DatagramSocket();
+        System.out.println("Starting Client Connection");
+        try
+        {
+
+            byte[] buffer;
+            buffer = request.toString().getBytes();
+            sPacket = new DatagramPacket(buffer, buffer.length, ia, portNumber);
+            //sending the packet
+            datasocket.send(sPacket);
+
+            byte [] rbuffer = new byte[1024];
+            rPacket = new DatagramPacket(rbuffer, rbuffer.length);
+            datasocket.receive(rPacket);
+
+            String retString = new String((rPacket.getData()));
+            textArea.append("\n"+retString);
+            datasocket.close();
+            System.out.println("Stopping Client Connection");
+        }
+        catch (IOException eee)
+        {
+            System.err.println(eee);
         }
     }
 
