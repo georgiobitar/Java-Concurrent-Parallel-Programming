@@ -73,7 +73,7 @@ public class DataAnalysis
         panel.add(secondTextField);
         panel.add(new JLabel("Third Word:"));
         panel.add(thirdTextField);
-        ThreeWordsThreadCountButton = new JButton("Search one of Three Words");
+        ThreeWordsThreadCountButton = new JButton("Search the Words");
         clearButton = new JButton("Clear");
         panel.add(new JLabel(" "));
         panel.add(new JLabel(" "));
@@ -209,7 +209,6 @@ public class DataAnalysis
         public void actionPerformed(ActionEvent arg0)
         {
 
-
             try
             {
                 if(stringToSendTextField.getText().isBlank()){
@@ -224,7 +223,6 @@ public class DataAnalysis
                     request.put("WordToAdd",stringToSendTextField.getText());
 
                     SendPacket(request);
-
                 }
 
             }
@@ -258,10 +256,7 @@ public class DataAnalysis
                     request.put("NewWord",newWord);
 
                     SendPacket(request);
-
                 }
-
-
             }
             catch (Exception e)
             {
@@ -278,7 +273,6 @@ public class DataAnalysis
         System.out.println("Starting Client Connection");
         try
         {
-
             byte[] buffer;
             buffer = request.toString().getBytes();
             sPacket = new DatagramPacket(buffer, buffer.length, ia, portNumber);

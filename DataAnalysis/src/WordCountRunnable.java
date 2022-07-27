@@ -8,10 +8,8 @@ import javax.swing.SwingUtilities;
 
 public class WordCountRunnable implements Runnable {
     private String word;
-    //private JTextArea textArea;
     private int count = 0;
     private final String filePath = FileSystems.getDefault().getPath("data.txt").toString();
-    private static String fileName = FileSystems.getDefault().getPath("data.txt").toString();
     private volatile String result;
 
     public WordCountRunnable(String word) {
@@ -29,10 +27,6 @@ public class WordCountRunnable implements Runnable {
                     count++;
             }
 
-
-            //BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
-            //out.write(word + " appears: " + count + " times\n");
-            //out.close();
             result = word + " appears: " + count + " times\n";
 
 

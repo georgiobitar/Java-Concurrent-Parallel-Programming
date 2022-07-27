@@ -33,18 +33,13 @@ public class Server {
     public void StartServer() {
         DatagramPacket dataPacket, returnPacket;
         try {
-            readerWriter.startWrite();
             DatagramSocket datasocket = new DatagramSocket(portNumber);
             System.out.println("Starting Server");
             while (true) {
                 try {
-
                     byte[] buf = new byte[len];
                     dataPacket = new DatagramPacket(buf, buf.length);
-                    //wait for user to send packet and put it in the datapacket variable
                     datasocket.receive(dataPacket);
-                    //InetAddress address = dataPacket.getAddress();
-                    //int port = dataPacket.getPort();
                     String data = new String(dataPacket.getData(), 0, dataPacket.getLength());
 
                     Object result = JSONValue.parse(data);
@@ -83,7 +78,7 @@ public class Server {
 
                         default:
                             System.out.println("Error getting data");
-
+                            Response = "Error getting data";
                     }
 
                     byte[] buffer = new byte[1024];
@@ -106,24 +101,30 @@ public class Server {
         } catch (SocketException se) {
             System.err.println(se);
         } finally {
-            //readerWriter.endWrite();
         }
     }
 
     private void AddWord(String wordToAdd) {
         try {
+            lock.acquire();
             BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
             out.write(wordToAdd + "\n");
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("exception occurred" + e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            lock.release();
         }
 
     }
 
     public String CountThreeWords(String firstTextField, String secondTextField, String thirdTextField) throws InterruptedException {
         try {
+
             mutex.acquire();
             numReaders++;
             if (numReaders == 1)
@@ -139,25 +140,26 @@ public class Server {
 
             if (!firstTextField.isBlank()) {
                 thread1 = new Thread(wc1);
+                thread1.start();
             }
             if (!secondTextField.isBlank()) {
                 thread2 = new Thread(wc2);
+                thread2.start();
             }
             if (!thirdTextField.isBlank()) {
                 thread3 = new Thread(wc3);
+                thread3.start();
             }
+
             if (thread1 != null) {
-                thread1.start();
                 thread1.join();
                 TotalResult += wc1.getResult();
             }
             if (thread2 != null) {
-                thread2.start();
                 thread2.join();
                 TotalResult += wc2.getResult();
             }
             if (thread3 != null) {
-                thread3.start();
                 thread3.join();
                 TotalResult += wc3.getResult();
             }
